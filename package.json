@@ -1,0 +1,33 @@
+{
+  "name": "automation-script",
+  "version": "1.0.0",
+  "main": "main.js",
+  "description": "MIS Login Automation Script",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "productName": "Automation Script",
+    "appId": "com.zainul.automation",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "node_modules/chromedriver/lib/chromedriver/chromedriver"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/hacker.png"
+    }
+  },
+  "devDependencies": {
+    "electron": "^29.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "dependencies": {
+    "selenium-webdriver": "^4.20.0",
+    "chromedriver": "^114.0.0"
+  }
+}

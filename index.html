@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login Automation</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #00ff00;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      text-shadow: 0 0 10px #00ff00;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    input {
+      background-color: #000;
+      color: #00ff00;
+      border: 2px solid #00ff00;
+      padding: 0.5rem 1rem;
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+      width: 300px;
+      text-align: center;
+      box-shadow: 0 0 10px #00ff00;
+      transition: all 0.3s ease-in-out;
+    }
+
+    input:focus {
+      outline: none;
+      box-shadow: 0 0 15px #00ff00, 0 0 20px #00ff00;
+    }
+
+    button {
+      background-color: #000;
+      color: #00ff00;
+      border: 2px solid #00ff00;
+      padding: 0.7rem 2rem;
+      margin-top: 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 0 10px #00ff00;
+    }
+
+    button:hover {
+      background-color: #00ff00;
+      color: #000;
+      box-shadow: 0 0 15px #00ff00;
+    }
+
+    #status {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      animation: blink 1s infinite alternate;
+    }
+
+    @keyframes blink {
+      from { opacity: 1; }
+      to { opacity: 0.4; }
+    }
+  </style>
+</head>
+<body>
+  <h1>🔐 Access Terminal</h1>
+  <input id="misId" placeholder="Enter MIS ID" />
+  <input id="password" placeholder="Enter Password" type="password" />
+  <button onclick="sendLogin()">Start Automation</button>
+
+  <p id="status"></p>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+
+    function sendLogin() {
+      const misId = document.getElementById('misId').value;
+      const password = document.getElementById('password').value;
+
+      ipcRenderer.send('login-details', { misId, password });
+      document.getElementById('status').innerText = '⌛ Running automation...';
+    }
+
+    ipcRenderer.on('automation-complete', (event, message) => {
+      document.getElementById('status').innerText = "✅ " + message;
+    });
+
+    ipcRenderer.on('automation-error', (event, message) => {
+      document.getElementById('status').innerText = "❌ Error: " + message;
+    });
+  </script>
+</body>
+</html>
